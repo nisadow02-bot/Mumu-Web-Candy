@@ -49,15 +49,17 @@
         .bread-card { border-radius: 2rem; border: 2px solid #FFD1DC; box-shadow: 0 8px 25px rgba(255, 209, 220, 0.25); background: #ffffff; transition: all 0.3s ease; }
         .bread-card:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(155, 142, 169, 0.2); }
 
+        /* แก้ไขแอนิเมชันวิปครีมเหลวไหล (Melting Cream Liquid Transition) ให้ทำงานสมูท 100% */
         #creamTransition {
             position: fixed;
-            top: -100%;
+            top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background: linear-gradient(135deg, #FFD1DC 0%, #FFFDF9 50%, #E8F8F5 100%);
             z-index: 9999;
-            transition: top 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+            transform: translateY(-100%);
+            transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -67,7 +69,7 @@
             border-bottom-right-radius: 50% 20px;
         }
         #creamTransition.active {
-            top: 0;
+            transform: translateY(0%);
             pointer-events: auto;
         }
         .cream-wave {
@@ -597,9 +599,8 @@
     </div>
 
     <script>
-        // 📌 นำ Web App URL ของ Google Apps Script มาวางแทนที่ลิงก์ด้านล่างนี้ได้เลยครับ
-        const APPS_SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbxubT-EPL2Ir3_9L8LGC2dAghZD_iZJss1ShXAHebGleDwrJeWw7H0cgpGdIKlXTw/exec";
+        // 📌 ใส่ Web App URL ของ Google Apps Script ของคุณที่นี่
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxubT-EPL2Ir3_9L8LGC2dAghZD_iZJss1ShXAHebGleDwrJeWw7H0cgpGdIKlXTw/exec";
         const ADMIN_PASSWORD = "admin";
 
         let currentUser = null;
@@ -1138,7 +1139,7 @@
             document.getElementById('setAccBank').value = shopSettings.accBank || '';
             document.getElementById('setAccName').value = shopSettings.accName || '';
             document.getElementById('setAccNumber').value = shopSettings.accNumber || '';
-            document.getElementById('setAccWallet').value = shopSettings.accWallet || '0989828417';
+            document.getElementById('setAccWallet').value = shopSettings.accWallet || '0644644210';
             document.getElementById('setNoteSlip').value = shopSettings.noteSlip || 'ซื้อขายกับMumu';
 
             document.getElementById('displayAccBank').innerText = shopSettings.accBank || '-';
@@ -1227,6 +1228,3 @@
     </script>
 </body>
 </html>
-
-
-
