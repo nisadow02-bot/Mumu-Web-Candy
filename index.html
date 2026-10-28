@@ -35,21 +35,32 @@
     </script>
     <style>
         body { font-family: 'Kanit', sans-serif; background-color: #FFFDF9; color: #3D2817; overflow-x: hidden; }
-        .petal-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; overflow: hidden; }
-        .petal { position: absolute; background-color: #FFD1DC; border-radius: 150% 0 150% 0; opacity: 0.6; pointer-events: none; animation: animatePetal 10s linear infinite; }
-        @keyframes animatePetal {
-            0% { opacity: 0; top: -10%; transform: translateX(0) rotate(0deg); }
-            10% { opacity: 0.7; }
-            90% { opacity: 0.7; }
-            100% { opacity: 0; top: 110%; transform: translateX(100px) rotate(360deg); }
+        
+        /* เอฟเฟกต์มาการองเคลื่อนไหว (แทนที่ซากุระเดิม) */
+        .macaron-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; overflow: hidden; }
+        .macaron { 
+            position: absolute; 
+            border-radius: 50%; 
+            opacity: 0.85; 
+            pointer-events: none; 
+            animation: animateMacaron 10s linear infinite; 
+            box-shadow: inset 0 -3px 4px rgba(0,0,0,0.15), 0 2px 5px rgba(0,0,0,0.1);
+            border: 2px dashed rgba(255,255,255,0.7);
         }
+        @keyframes animateMacaron {
+            0% { opacity: 0; top: -10%; transform: translateX(0) rotate(0deg) scale(0.8); }
+            10% { opacity: 0.9; }
+            90% { opacity: 0.9; }
+            100% { opacity: 0; top: 110%; transform: translateX(80px) rotate(360deg) scale(1.1); }
+        }
+
         @keyframes spinSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         .animate-spin-slow { animation: spinSlow 6s linear infinite; }
 
         .bread-card { border-radius: 2rem; border: 2px solid #FFD1DC; box-shadow: 0 8px 25px rgba(255, 209, 220, 0.25); background: #ffffff; transition: all 0.3s ease; }
         .bread-card:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(155, 142, 169, 0.2); }
 
-        /* แก้ไขแอนิเมชันวิปครีมเหลวไหล (Melting Cream Liquid Transition) ให้ทำงานสมูท 100% */
+        /* แอนิเมชันวิปครีมเหลวไหล (Melting Cream Liquid Transition) */
         #creamTransition {
             position: fixed;
             top: 0;
@@ -96,7 +107,8 @@
         <div class="cream-wave"></div>
     </div>
 
-    <div class="petal-container" id="petalContainer"></div>
+    <!-- Macaron Animation Container -->
+    <div class="macaron-container" id="macaronContainer"></div>
 
     <!-- Floating Music Player Widget -->
     <div class="fixed bottom-4 left-4 z-40 bg-white/95 backdrop-blur-md px-3 py-2 rounded-3xl shadow-lg border border-sakuraPink flex items-center space-x-2">
@@ -212,13 +224,13 @@
                     </div>
                     <p class="text-xs font-semibold text-chocoText" id="topupBankInfo">-</p>
                     <p class="text-base font-mono font-bold text-chocoText" id="topupNumberInfo">-</p>
-                    <p class="text-xs text-grayPurple font-semibold">TrueMoney Wallet: <span id="topupWalletDisplay" class="font-mono">0644644210</span></p>
+                    <p class="text-xs text-grayPurple font-semibold">TrueMoney Wallet: <span id="topupWalletDisplay" class="font-mono">0989828417</span></p>
                     
                     <div class="flex flex-wrap justify-center gap-2 pt-1">
                         <button onclick="copyText('topupNumberInfo', 'เลขบัญชีร้าน')" class="bg-sakuraPinkDark hover:opacity-90 text-chocoText text-xs font-bold px-3.5 py-2 rounded-2xl shadow-sm transition-all">
                             <i class="fa-solid fa-copy mr-1"></i> คัดลอกเลขบัญชี
                         </button>
-                        <button onclick="copyCustomText('0644644210', 'True Wallet')" class="bg-grayPurple hover:opacity-90 text-white text-xs font-bold px-3.5 py-2 rounded-2xl shadow-sm transition-all">
+                        <button onclick="copyCustomText('0989828417', 'True Wallet')" class="bg-grayPurple hover:opacity-90 text-white text-xs font-bold px-3.5 py-2 rounded-2xl shadow-sm transition-all">
                             <i class="fa-solid fa-wallet mr-1"></i> คัดลอก Wallet
                         </button>
                         <button onclick="copyCustomText('ซื้อขายกับMumu', 'โน๊ตสลิป')" class="bg-mintPaleDark hover:opacity-90 text-chocoText text-xs font-bold px-3.5 py-2 rounded-2xl shadow-sm transition-all">
@@ -305,9 +317,9 @@
                     <div class="bg-sakuraPink/30 p-4 rounded-3xl border border-sakuraPink flex items-center justify-between">
                         <div>
                             <p class="text-xs text-grayPurple font-semibold mb-0.5">TrueMoney Wallet</p>
-                            <p class="text-base font-mono font-bold text-chocoText" id="displayAccWallet">0644644210</p>
+                            <p class="text-base font-mono font-bold text-chocoText" id="displayAccWallet">0989828417</p>
                         </div>
-                        <button onclick="copyCustomText('0644644210', 'TrueMoney Wallet')" class="bg-grayPurple hover:opacity-90 text-white text-xs font-bold px-4 py-2 rounded-2xl shadow-sm transition-all">
+                        <button onclick="copyCustomText('0989828417', 'TrueMoney Wallet')" class="bg-grayPurple hover:opacity-90 text-white text-xs font-bold px-4 py-2 rounded-2xl shadow-sm transition-all">
                             <i class="fa-solid fa-copy mr-1"></i> คัดลอก
                         </button>
                     </div>
@@ -505,7 +517,7 @@
                             </div>
                             <div>
                                 <label class="block text-xs font-semibold text-chocoText mb-1">TrueMoney Wallet (AccWallet)</label>
-                                <input type="text" id="setAccWallet" value="0644644210" class="w-full px-3 py-2 rounded-2xl border border-sakuraPink text-xs font-mono bg-white">
+                                <input type="text" id="setAccWallet" value="0989828417" class="w-full px-3 py-2 rounded-2xl border border-sakuraPink text-xs font-mono bg-white">
                             </div>
                             <div class="md:col-span-2">
                                 <label class="block text-xs font-semibold text-chocoText mb-1">โน๊ตสลิป (NoteSlip)</label>
@@ -619,7 +631,7 @@
             accName: "ชรินพัชร เพชรสวน",
             accNumber: "123-4-56789-0",
             accBank: "ธนาคารกสิกรไทย",
-            accWallet: "0644644210",
+            accWallet: "0989828417",
             noteSlip: "ซื้อขายกับMumu"
         };
 
@@ -706,23 +718,26 @@
             });
         }
 
-        function createPetals() {
-            const container = document.getElementById('petalContainer');
-            for (let i = 0; i < 15; i++) {
-                const petal = document.createElement('div');
-                petal.classList.add('petal');
-                const size = Math.random() * 12 + 10;
-                petal.style.width = `${size}px`;
-                petal.style.height = `${size * 1.3}px`;
-                petal.style.left = `${Math.random() * 100}%`;
-                petal.style.animationDelay = `${Math.random() * 8}s`;
-                petal.style.animationDuration = `${Math.random() * 5 + 7}s`;
-                container.appendChild(petal);
+        // ฟังก์ชันสร้างมาการองเคลื่อนไหวหลากสีสัน
+        function createMacarons() {
+            const container = document.getElementById('macaronContainer');
+            const colors = ['#FFD1DC', '#E8F8F5', '#FFF2CC', '#E1D5E7', '#D5E8D4', '#F8CECC'];
+            for (let i = 0; i < 18; i++) {
+                const macaron = document.createElement('div');
+                macaron.classList.add('macaron');
+                const size = Math.random() * 16 + 14; // ขนาดมาการอง
+                macaron.style.width = `${size}px`;
+                macaron.style.height = `${size * 0.65}px`; // รูปทรงคล้ายขนมมาการอง
+                macaron.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                macaron.style.left = `${Math.random() * 100}%`;
+                macaron.style.animationDelay = `${Math.random() * 8}s`;
+                macaron.style.animationDuration = `${Math.random() * 5 + 7}s`;
+                container.appendChild(macaron);
             }
         }
 
         window.onload = function() {
-            createPetals();
+            createMacarons();
             fetchDataFromSheet(false);
         };
 
@@ -1139,18 +1154,18 @@
             document.getElementById('setAccBank').value = shopSettings.accBank || '';
             document.getElementById('setAccName').value = shopSettings.accName || '';
             document.getElementById('setAccNumber').value = shopSettings.accNumber || '';
-            document.getElementById('setAccWallet').value = shopSettings.accWallet || '0644644210';
+            document.getElementById('setAccWallet').value = shopSettings.accWallet || '0989828417';
             document.getElementById('setNoteSlip').value = shopSettings.noteSlip || 'ซื้อขายกับMumu';
 
             document.getElementById('displayAccBank').innerText = shopSettings.accBank || '-';
             document.getElementById('displayAccName').innerText = shopSettings.accName || '-';
             document.getElementById('displayAccNumber').innerText = shopSettings.accNumber || '-';
-            document.getElementById('displayAccWallet').innerText = shopSettings.accWallet || '0644644210';
+            document.getElementById('displayAccWallet').innerText = shopSettings.accWallet || '0989828417';
             document.getElementById('displayNoteSlip').innerText = shopSettings.noteSlip || 'ซื้อขายกับMumu';
 
             document.getElementById('topupBankInfo').innerText = (shopSettings.accBank || '-') + ' (' + (shopSettings.accName || '-') + ')';
             document.getElementById('topupNumberInfo').innerText = shopSettings.accNumber || '-';
-            document.getElementById('topupWalletDisplay').innerText = shopSettings.accWallet || '0644644210';
+            document.getElementById('topupWalletDisplay').innerText = shopSettings.accWallet || '0989828417';
 
             const topupContainer = document.getElementById('topupImgContainer');
             const topupImg = document.getElementById('topupImgDisplay');
