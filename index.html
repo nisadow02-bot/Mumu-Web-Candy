@@ -923,48 +923,68 @@
         }
 
         function executePurchase(product) {
-            playCuteSound();
-            currentUser.credit -= product.price;
-            usersCredit[currentUser.username] = currentUser.credit;
-            updateUserUI();
+    playCuteSound();
+    currentUser.credit -= product.price;
+    usersCredit[currentUser.username] = currentUser.credit;
+    updateUserUI();
 
-            const deliveredCode = product.codes.shift();
-            const dateStr = new Date().toLocaleString('th-TH');
-            
-            const newOrder = {
-                orderId: 'MUMU-' + Math.floor(100000 + Math.random() * 900000),
-                username: currentUser.username,
-                productName: product.name,
-                price: product.price,
-                code: deliveredCode,
-                date: dateStr
-            };
+    const deliveredCode = product.codes.shift();
+    const dateStr = new Date().toLocaleString('th-TH');
+    
+    const newOrder = {
+        orderId: 'MUMU-' + Math.floor(100000 + Math.random() * 900000),
+        username: currentUser.username,
+        productName: product.name,
+        price: product.price,
+        code: deliveredCode,
+        date: dateStr
+    };
 
-            orders.unshift(newOrder);
+    orders.unshift(newOrder);
 
-            sales.unshift({
-                id: newOrder.orderId,
-                username: currentUser.username,
-                productName: product.name,
-                price: product.price,
-                soldCode: deliveredCode,
-                date: dateStr,
-                status: 'สำเร็จ'
-            });
+    const newSale = {
+        id: newOrder.orderId,
+        username: currentUser.username,
+        productName: product.name,
+        price: product.price,
+        soldCode: deliveredCode,
+        date: dateStr,
+        status: 'สำเร็จ'
+    };
 
-            renderProducts();
-            renderOrders();
-            renderAdminView();
-            saveAllDataToSheet(false);
+    sales.unshift(newSale);
 
-            Swal.fire({
-                icon: 'success',
-                title: 'สั่งซื้อสำเร็จ!',
-                html: `<p class="text-xs text-grayPurple mb-2">รหัสสินค้าของคุณ (เรียงบรรทัด คัดลอกง่าย):</p><textarea readonly class="w-full h-36 bg-mintPale p-3 rounded-2xl border border-sakuraPink font-mono text-xs text-chocoText select-all">${deliveredCode}</textarea>`,
-                confirmButtonText: 'ดูคำสั่งซื้อ',
-                confirmButtonColor: '#FFB6C1'
-            }).then(() => { triggerCreamTransition(() => switchTab('orders')); });
-        }
+    renderProducts();
+    renderOrders();
+    renderAdminView();
+
+    // 📌 เพิ่มส่วนนี้: ส่งข้อมูลคำสั่งซื้อและการขายไปบันทึกลง Google Sheet ทันที
+    const salePayload = {
+        order: newOrder,
+        sale: newSale,
+        products: products,
+        orders: orders,
+        settings: shopSettings
+    };
+
+    const callbackName = 'jsonpSale_' + Math.round(100000 * Math.random());
+    window[callbackName] = function(response) {
+        delete window[callbackName];
+        if (document.body.contains(script)) document.body.removeChild(script);
+    };
+
+    const script = document.createElement('script');
+    script.src = `${APPS_SCRIPT_URL}?action=buy&callback=${callbackName}&data=${encodeURIComponent(JSON.stringify(salePayload))}`;
+    document.body.appendChild(script);
+
+    Swal.fire({
+        icon: 'success',
+        title: 'สั่งซื้อสำเร็จ!',
+        html: `<p class="text-xs text-grayPurple mb-2">รหัสสินค้าของคุณ (เรียงบรรทัด คัดลอกง่าย):</p><textarea readonly class="w-full h-36 bg-mintPale p-3 rounded-2xl border border-sakuraPink font-mono text-xs text-chocoText select-all">${deliveredCode}</textarea>`,
+        confirmButtonText: 'ดูคำสั่งซื้อ',
+        confirmButtonColor: '#FFB6C1'
+    }).then(() => { triggerCreamTransition(() => switchTab('orders')); });
+}
 
         function renderOrders() {
             const tbody = document.getElementById('ordersTableBody');
