@@ -244,10 +244,10 @@
                     <div>
                         <label class="block text-xs font-semibold text-chocoText mb-1">อัปโหลดรูปสลิปโอนเงิน (จากเครื่อง)</label>
                         <input type="file" id="topupSlipFile" accept="image/*" required class="w-full px-3 py-2 rounded-2xl border border-sakuraPink text-sm bg-mintPale/30 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-sakuraPinkDark file:text-chocoText hover:file:opacity-90">
-                        <p class="text-[11px] text-grayPurple mt-1">ระบบจะอัปโหลดรูปภาพเก็บเข้า Google Drive ของร้านให้อัตโนมัติ</p>
+                        <p class="text-[11px] text-grayPurple mt-1">ระบบจะตรวจสอบสลิปและเติมเครดิตให้อัตโนมัติ</p>
                     </div>
                     <button type="submit" class="w-full bg-gradient-to-r from-sakuraPinkDark to-mintPaleDark text-chocoText font-bold py-3 rounded-2xl text-sm shadow-md hover:opacity-95 transition-all">
-                        <i class="fa-solid fa-paper-plane mr-1"></i> เติมเครดิตเข้าระบบทันที (บันทึกลง Google Sheet)
+                        <i class="fa-solid fa-paper-plane mr-1"></i> ตรวจสอบสลิปและเติมเครดิตทันที
                     </button>
                 </form>
             </div>
@@ -588,7 +588,7 @@
 
     <script>
         // 📌 ใส่ Web App URL ของ Google Apps Script ของคุณที่นี่
-        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz8vArUJtL_YCPr-ZYl0-Gphs-NefZguQvh_IldVrgU1pimswbUkoY60_0ZvgZrSsxk/exec";
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwDQ6LOkGaKcMFFYiR_Pbq0Z0XQeO7qDkFa6Asc2tLg-L6MHee3wrD8z-YahcTT9bay/exec";
         const ADMIN_PASSWORD = "admin";
 
         let currentUser = null;
@@ -773,7 +773,7 @@
             }
         }
 
-        // ฟังก์ชันอัปโหลดสลิปจากเครื่องลง Drive และเติมเงินอัตโนมัติ (แก้ไขการเรียก POST ให้รองรับ Google Apps Script)
+        // ฟังก์ชันอัปโหลดสลิปและตรวจสอบผ่าน API
         function handleTopupSubmit(e) {
             e.preventDefault();
             if (!currentUser) { openAuthModal(); return; }
@@ -788,25 +788,21 @@
             }
 
             const file = fileInput.files[0];
-            Swal.fire({ title: 'กำลังอัปโหลดสลิปและเติมเงิน...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
+            Swal.fire({ title: 'กำลังตรวจสอบสลิปและเติมเงิน...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
 
             const reader = new FileReader();
             reader.onload = function(uploadEvent) {
                 const base64Data = uploadEvent.target.result;
 
-                // ใช้ fetch แบบส่งผ่าน POST (พร้อมตั้งค่า Content-Type เพื่อป้องกัน CORS Preflight ปฏิเสธจาก Google Apps Script)
                 fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'text/plain;charset=utf-8',
-                    },
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify({
-                        action: 'uploadAndTopup', // รวมขั้นตอนอัปโหลดและเติมเงินไว้ในฟังก์ชันเดียวหลังบ้าน เพื่อความเสถียร
+                        action: 'uploadAndTopup',
                         username: currentUser.username,
                         amount: amount,
                         base64Data: base64Data,
-                        filename: file.name,
-                        contentType: file.type
+                        filename: file.name
                     })
                 })
                 .then(res => res.json())
@@ -822,7 +818,7 @@
                         Swal.fire({
                             icon: 'success',
                             title: 'เติมเครดิตสำเร็จ!',
-                            text: `ระบบเติมเงินเข้าอัตโนมัติ ${amount} ฿ เรียบร้อยแล้ว`,
+                            text: `ระบบตรวจสอบสลิปและเติมเงิน ${amount} ฿ เรียบร้อยแล้ว`,
                             timer: 2000,
                             showConfirmButton: false
                         }).then(() => {
@@ -830,20 +826,11 @@
                             triggerCreamTransition(() => switchTab('shop'));
                         });
                     } else {
-                        Swal.fire('เกิดข้อผิดพลาด', topupRes.message || 'ไม่สามารถบันทึกข้อมูลการเติมเงินได้', 'error');
+                        Swal.fire('ตรวจสอบสลิปไม่ผ่าน', topupRes.message || 'กรุณาตรวจสอบรูปสลิปหรือยอดเงินใหม่อีกครั้ง', 'error');
                     }
                 })
                 .catch(err => {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'ส่งสลิปเรียบร้อย!',
-                        text: 'ระบบได้รับข้อมูลการเติมเงินของคุณแล้ว เครดิตจะเข้าในไม่ช้า',
-                        timer: 2500,
-                        showConfirmButton: false
-                    }).then(() => {
-                        fetchDataFromSheet(false);
-                        triggerCreamTransition(() => switchTab('shop'));
-                    });
+                    Swal.fire('เกิดข้อผิดพลาด', err.toString(), 'error');
                 });
             };
             reader.readAsDataURL(file);
@@ -1092,7 +1079,7 @@
                             <td class="p-2.5 font-mono">${t.topupId}</td>
                             <td class="p-2.5 font-semibold text-chocoText">${t.username}</td>
                             <td class="p-2.5 text-chocoText font-bold">+${t.amount} ฿</td>
-                            <td class="p-2.5">${t.slip ? `<a href="${t.slip}" target="_blank" class="text-grayPurple underline font-semibold" onclick="event.preventDefault(); openImageViewer('${t.slip}')">ดูรูปสลิป</a>` : 'ไม่มีสลิป'}</td>
+                            <td class="p-2.5">${t.slip || 'ไม่มีสลิป'}</td>
                             <td class="p-2.5 text-[11px] text-grayPurple">${t.date}</td>
                             <td class="p-2.5"><span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-bold text-[10px]">${t.status}</span></td>
                         </tr>
