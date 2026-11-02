@@ -36,7 +36,6 @@
     <style>
         body { font-family: 'Kanit', sans-serif; background-color: #FFFDF9; color: #3D2817; overflow-x: hidden; }
         
-        /* เอฟเฟกต์มาการองเคลื่อนไหว (แทนที่ซากุระเดิม) */
         .macaron-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; overflow: hidden; }
         .macaron { 
             position: absolute; 
@@ -60,7 +59,6 @@
         .bread-card { border-radius: 2rem; border: 2px solid #FFD1DC; box-shadow: 0 8px 25px rgba(255, 209, 220, 0.25); background: #ffffff; transition: all 0.3s ease; }
         .bread-card:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(155, 142, 169, 0.2); }
 
-        /* แอนิเมชันวิปครีมเหลวไหล (Melting Cream Liquid Transition) */
         #creamTransition {
             position: fixed;
             top: 0;
@@ -96,7 +94,6 @@
 </head>
 <body class="bg-creamBg text-chocoText min-h-screen flex flex-col">
 
-    <!-- Melting Cream Liquid Transition Overlay -->
     <div id="creamTransition">
         <div class="text-center space-y-3">
             <div class="w-16 h-16 bg-sakuraPink rounded-full flex items-center justify-center mx-auto text-chocoText text-2xl shadow-md animate-bounce">
@@ -107,10 +104,9 @@
         <div class="cream-wave"></div>
     </div>
 
-    <!-- Macaron Animation Container -->
     <div class="macaron-container" id="macaronContainer"></div>
 
-    <!-- Floating Music Player Widget -->
+    <!-- Music Player Widget -->
     <div class="fixed bottom-4 left-4 z-40 bg-white/95 backdrop-blur-md px-3 py-2 rounded-3xl shadow-lg border border-sakuraPink flex items-center space-x-2">
         <div class="w-8 h-8 rounded-full bg-mintPale flex items-center justify-center text-grayPurple animate-spin-slow">
             <i class="fa-solid fa-music"></i>
@@ -207,23 +203,25 @@
             <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         </section>
 
-        <!-- Top-up Page -->
+        <!-- Top-up Page (แสดง QR Code และฟอร์มเติมเงิน) -->
         <section id="page-topup" class="tab-content hidden">
             <div class="max-w-xl mx-auto bread-card p-6 space-y-6">
                 <div class="flex items-center space-x-3 border-b border-mintPale pb-3">
                     <i class="fa-solid fa-coins text-2xl text-sakuraPinkDark"></i>
                     <div>
                         <h2 class="text-xl font-bold text-chocoText">เติมเครดิตเข้าระบบอัตโนมัติ</h2>
-                        <p class="text-xs text-grayPurple">โอนเงินแล้วกรอกจำนวนเงินและลิงก์รูปสลิป เครดิตเข้าทันที ไม่ต้องรออนุมัติ</p>
+                        <p class="text-xs text-grayPurple">สแกน QR Code เพื่อโอนเงิน จากนั้นกรอกจำนวนเงินและลิงก์สลิป เครดิตเข้าทันที</p>
                     </div>
                 </div>
 
-                <div class="bg-mintPale/60 p-4 rounded-3xl border border-sakuraPink text-center space-y-3">
-                    <div id="topupImgContainer" class="hidden">
-                        <img id="topupImgDisplay" src="" class="max-w-[220px] h-auto rounded-2xl mx-auto shadow-sm border border-sakuraPink mb-2 cursor-pointer" onclick="openImageViewer(this.src)">
+                <!-- ส่วนแสดง QR Code เด่นชัดสำหรับสแกนจ่าย -->
+                <div class="bg-mintPale/60 p-5 rounded-3xl border border-sakuraPink text-center space-y-3 shadow-inner">
+                    <h3 class="font-bold text-sm text-chocoText"><i class="fa-solid fa-qrcode mr-1 text-sakuraPinkDark"></i> สแกน QR Code เพื่อชำระเงิน</h3>
+                    <div id="topupImgContainer" class="block">
+                        <img id="topupImgDisplay" src="https://i.ibb.co/cXDCXGJ5/IMG-2351.jpg" class="max-w-[220px] h-auto rounded-2xl mx-auto shadow-md border-2 border-sakuraPinkDark mb-2 cursor-pointer hover:scale-105 transition-all" onclick="openImageViewer(this.src)" alt="QR Code ชำระเงิน">
                     </div>
-                    <p class="text-xs font-semibold text-chocoText" id="topupBankInfo">-</p>
-                    <p class="text-base font-mono font-bold text-chocoText" id="topupNumberInfo">-</p>
+                    <p class="text-xs font-semibold text-chocoText" id="topupBankInfo">ธนาคารกสิกรไทย (ชรินพัชร เพชรสวน)</p>
+                    <p class="text-base font-mono font-bold text-chocoText" id="topupNumberInfo">123-4-56789-0</p>
                     <p class="text-xs text-grayPurple font-semibold">TrueMoney Wallet: <span id="topupWalletDisplay" class="font-mono">0989828417</span></p>
                     
                     <div class="flex flex-wrap justify-center gap-2 pt-1">
@@ -290,8 +288,8 @@
                     <h2 class="text-xl font-bold text-chocoText">ช่องทางการชำระเงิน / บัญชีร้าน</h2>
                 </div>
                 
-                <div id="accImgContainer" class="text-center hidden">
-                    <img id="accImgDisplay" src="" class="max-w-full h-auto rounded-3xl mx-auto shadow-sm border border-sakuraPink cursor-pointer" onclick="openImageViewer(this.src)" title="คลิกเพื่อดูรูปขนาดใหญ่">
+                <div id="accImgContainer" class="text-center">
+                    <img id="accImgDisplay" src="https://i.ibb.co/cXDCXGJ5/IMG-2351.jpg" class="max-w-[220px] h-auto rounded-3xl mx-auto shadow-sm border-2 border-sakuraPinkDark cursor-pointer" onclick="openImageViewer(this.src)" title="คลิกเพื่อดูรูปขนาดใหญ่">
                     <p class="text-[11px] text-grayPurple mt-1">คลิกที่รูปเพื่อขยายใหญ่</p>
                 </div>
 
@@ -299,15 +297,15 @@
                     <div class="bg-mintPale/60 p-4 rounded-3xl border border-sakuraPink flex items-center justify-between">
                         <div>
                             <p class="text-xs text-grayPurple font-semibold mb-0.5">ธนาคาร / ชื่อบัญชี</p>
-                            <p class="text-sm font-bold text-chocoText" id="displayAccBank">-</p>
-                            <p class="text-xs font-mono text-grayPurple" id="displayAccName">-</p>
+                            <p class="text-sm font-bold text-chocoText" id="displayAccBank">ธนาคารกสิกรไทย</p>
+                            <p class="text-xs font-mono text-grayPurple" id="displayAccName">ชรินพัชร เพชรสวน</p>
                         </div>
                     </div>
 
                     <div class="bg-mintPale/60 p-4 rounded-3xl border border-sakuraPink flex items-center justify-between">
                         <div>
                             <p class="text-xs text-grayPurple font-semibold mb-0.5">เลขบัญชีธนาคาร</p>
-                            <p class="text-base font-mono font-bold text-chocoText" id="displayAccNumber">-</p>
+                            <p class="text-base font-mono font-bold text-chocoText" id="displayAccNumber">123-4-56789-0</p>
                         </div>
                         <button onclick="copyText('displayAccNumber', 'เลขบัญชี')" class="bg-sakuraPinkDark hover:opacity-90 text-chocoText text-xs font-bold px-4 py-2 rounded-2xl shadow-sm transition-all">
                             <i class="fa-solid fa-copy mr-1"></i> คัดลอก
@@ -355,22 +353,20 @@
                         <div class="flex items-center space-x-3">
                             <div class="w-10 h-10 bg-emerald-500 text-white rounded-2xl flex items-center justify-center text-lg shadow-sm"><i class="fa-brands fa-line"></i></div>
                             <div>
-                                <p class="text-xs text-emerald-700 font-semibold">LINE ร้าน (@789kxbfn)</p>
+                                <p class="text-xs text-emerald-700 font-semibold">LINE ร้าน</p>
                                 <a href="https://lin.ee/pNxrvC0" target="_blank" class="text-sm font-mono font-bold text-emerald-900 underline">คลิกเพิ่มเพื่อน LINE</a>
                             </div>
                         </div>
-                        <button onclick="copyCustomText('@404ekgfi', 'Line ID')" class="bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold px-3 py-2 rounded-2xl shadow-sm">คัดลอก</button>
                     </div>
 
                     <div class="bg-sakuraPink/40 p-4 rounded-3xl border border-sakuraPink flex items-center justify-between">
                         <div class="flex items-center space-x-3">
                             <div class="w-10 h-10 bg-sky-500 text-white rounded-2xl flex items-center justify-center text-lg shadow-sm"><i class="fa-brands fa-telegram"></i></div>
                             <div>
-                                <p class="text-xs text-sky-700 font-semibold">Telegram (@mumustore2002)</p>
+                                <p class="text-xs text-sky-700 font-semibold">Telegram</p>
                                 <a href="https://t.me/momxyz" target="_blank" class="text-sm font-mono font-bold text-sky-900 underline">คลิกเปิด Telegram</a>
                             </div>
                         </div>
-                        <button onclick="copyCustomText('@momxyz', 'Telegram ID')" class="bg-sky-500 hover:bg-sky-600 text-white text-xs font-bold px-3 py-2 rounded-2xl shadow-sm">คัดลอก</button>
                     </div>
                 </div>
             </div>
@@ -500,20 +496,20 @@
                         <h3 class="font-bold text-sm text-chocoText"><i class="fa-solid fa-wallet mr-1"></i> ตั้งค่าข้อมูลบัญชี / ช่องทางชำระเงิน (Settings)</h3>
                         <div>
                             <label class="block text-xs font-semibold text-chocoText mb-1">ลิงก์รูปป้ายบัญชี / QR Code (AccImgUrl)</label>
-                            <input type="text" id="setAccImgUrl" placeholder="https://..." class="w-full px-3 py-2 rounded-2xl border border-sakuraPink text-xs bg-white">
+                            <input type="text" id="setAccImgUrl" value="https://i.ibb.co/cXDCXGJ5/IMG-2351.jpg" placeholder="https://..." class="w-full px-3 py-2 rounded-2xl border border-sakuraPink text-xs bg-white">
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <div>
                                 <label class="block text-xs font-semibold text-chocoText mb-1">ชื่อธนาคาร / ช่องทาง (AccBank)</label>
-                                <input type="text" id="setAccBank" placeholder="เช่น กสิกรไทย" class="w-full px-3 py-2 rounded-2xl border border-sakuraPink text-xs bg-white">
+                                <input type="text" id="setAccBank" value="ธนาคารกสิกรไทย" class="w-full px-3 py-2 rounded-2xl border border-sakuraPink text-xs bg-white">
                             </div>
                             <div>
                                 <label class="block text-xs font-semibold text-chocoText mb-1">ชื่อบัญชี (AccName)</label>
-                                <input type="text" id="setAccName" placeholder="ชรินพัชร..." class="w-full px-3 py-2 rounded-2xl border border-sakuraPink text-xs bg-white">
+                                <input type="text" id="setAccName" value="ชรินพัชร เพชรสวน" class="w-full px-3 py-2 rounded-2xl border border-sakuraPink text-xs bg-white">
                             </div>
                             <div>
                                 <label class="block text-xs font-semibold text-chocoText mb-1">เลขบัญชีธนาคาร (AccNumber)</label>
-                                <input type="text" id="setAccNumber" placeholder="xxx-x-xxxxx-x" class="w-full px-3 py-2 rounded-2xl border border-sakuraPink text-xs bg-white">
+                                <input type="text" id="setAccNumber" value="123-4-56789-0" class="w-full px-3 py-2 rounded-2xl border border-sakuraPink text-xs bg-white">
                             </div>
                             <div>
                                 <label class="block text-xs font-semibold text-chocoText mb-1">TrueMoney Wallet (AccWallet)</label>
@@ -627,7 +623,7 @@
         let shopSettings = {
             rules: "1. โซเชียลมีเดีย/แอคเคาท์ มีประกันตามเงื่อนไขร้าน\n2. ออกแบบเว็บไซต์จัดส่งข้อมูลผ่านระบบอัตโนมัติ",
             rulesImgUrl: "",
-            accImgUrl: "",
+            accImgUrl: "https://i.ibb.co/cXDCXGJ5/IMG-2351.jpg",
             accName: "ชรินพัชร เพชรสวน",
             accNumber: "123-4-56789-0",
             accBank: "ธนาคารกสิกรไทย",
@@ -718,16 +714,15 @@
             });
         }
 
-        // ฟังก์ชันสร้างมาการองเคลื่อนไหวหลากสีสัน
         function createMacarons() {
             const container = document.getElementById('macaronContainer');
             const colors = ['#FFD1DC', '#E8F8F5', '#FFF2CC', '#E1D5E7', '#D5E8D4', '#F8CECC'];
             for (let i = 0; i < 18; i++) {
                 const macaron = document.createElement('div');
                 macaron.classList.add('macaron');
-                const size = Math.random() * 16 + 14; // ขนาดมาการอง
+                const size = Math.random() * 16 + 14;
                 macaron.style.width = `${size}px`;
-                macaron.style.height = `${size * 0.65}px`; // รูปทรงคล้ายขนมมาการอง
+                macaron.style.height = `${size * 0.65}px`;
                 macaron.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
                 macaron.style.left = `${Math.random() * 100}%`;
                 macaron.style.animationDelay = `${Math.random() * 8}s`;
@@ -923,68 +918,67 @@
         }
 
         function executePurchase(product) {
-    playCuteSound();
-    currentUser.credit -= product.price;
-    usersCredit[currentUser.username] = currentUser.credit;
-    updateUserUI();
+            playCuteSound();
+            currentUser.credit -= product.price;
+            usersCredit[currentUser.username] = currentUser.credit;
+            updateUserUI();
 
-    const deliveredCode = product.codes.shift();
-    const dateStr = new Date().toLocaleString('th-TH');
-    
-    const newOrder = {
-        orderId: 'MUMU-' + Math.floor(100000 + Math.random() * 900000),
-        username: currentUser.username,
-        productName: product.name,
-        price: product.price,
-        code: deliveredCode,
-        date: dateStr
-    };
+            const deliveredCode = product.codes.shift();
+            const dateStr = new Date().toLocaleString('th-TH');
+            
+            const newOrder = {
+                orderId: 'MUMU-' + Math.floor(100000 + Math.random() * 900000),
+                username: currentUser.username,
+                productName: product.name,
+                price: product.price,
+                code: deliveredCode,
+                date: dateStr
+            };
 
-    orders.unshift(newOrder);
+            orders.unshift(newOrder);
 
-    const newSale = {
-        id: newOrder.orderId,
-        username: currentUser.username,
-        productName: product.name,
-        price: product.price,
-        soldCode: deliveredCode,
-        date: dateStr,
-        status: 'สำเร็จ'
-    };
+            const newSale = {
+                id: newOrder.orderId,
+                username: currentUser.username,
+                productName: product.name,
+                price: product.price,
+                soldCode: deliveredCode,
+                date: dateStr,
+                status: 'สำเร็จ'
+            };
 
-    sales.unshift(newSale);
+            sales.unshift(newSale);
 
-    renderProducts();
-    renderOrders();
-    renderAdminView();
+            renderProducts();
+            renderOrders();
+            renderAdminView();
 
-    // 📌 เพิ่มส่วนนี้: ส่งข้อมูลคำสั่งซื้อและการขายไปบันทึกลง Google Sheet ทันที
-    const salePayload = {
-        order: newOrder,
-        sale: newSale,
-        products: products,
-        orders: orders,
-        settings: shopSettings
-    };
+            const salePayload = {
+                order: newOrder,
+                sale: newSale,
+                products: products,
+                orders: orders,
+                settings: shopSettings
+            };
 
-    const callbackName = 'jsonpSale_' + Math.round(100000 * Math.random());
-    window[callbackName] = function(response) {
-        delete window[callbackName];
-        if (document.body.contains(script)) document.body.removeChild(script);
-    };
+            const callbackName = 'jsonpSale_' + Math.round(100000 * Math.random());
+            window[callbackName] = function(response) {
+                delete window[callbackName];
+                if (document.body.contains(script)) document.body.removeChild(script);
+            };
 
-    const script = document.createElement('script');
-    script.src = `${APPS_SCRIPT_URL}?action=buy&callback=${callbackName}&data=${encodeURIComponent(JSON.stringify(salePayload))}`;
-    document.body.appendChild(script);
+            const script = document.createElement('script');
+            script.src = `${APPS_SCRIPT_URL}?action=buy&callback=${callbackName}&data=${encodeURIComponent(JSON.stringify(salePayload))}`;
+            document.body.appendChild(script);
 
-    Swal.fire({
-        icon: 'success',
-        title: 'สั่งซื้อสำเร็จ!',
-        html: `<p class="text-xs text-grayPurple mb-2">รหัสสินค้าของคุณ (เรียงบรรทัด คัดลอกง่าย):</p><textarea readonly class="w-full h-36 bg-mintPale p-3 rounded-2xl border border-sakuraPink font-mono text-xs text-chocoText select-all">${deliveredCode}</textarea>`,
-        confirmButtonText: 'ดูคำสั่งซื้อ',
-        confirmButtonColor: '#FFB6C1'
-    }).then(() => { triggerCreamTransition(() => switchTab('orders')); });
-}
+            Swal.fire({
+                icon: 'success',
+                title: 'สั่งซื้อสำเร็จ!',
+                html: `<p class="text-xs text-grayPurple mb-2">รหัสสินค้าของคุณ (เรียงบรรทัด คัดลอกง่าย):</p><textarea readonly class="w-full h-36 bg-mintPale p-3 rounded-2xl border border-sakuraPink font-mono text-xs text-chocoText select-all">${deliveredCode}</textarea>`,
+                confirmButtonText: 'ดูคำสั่งซื้อ',
+                confirmButtonColor: '#FFB6C1'
+            }).then(() => { triggerCreamTransition(() => switchTab('orders')); });
+        }
 
         function renderOrders() {
             const tbody = document.getElementById('ordersTableBody');
@@ -1187,20 +1181,16 @@
             document.getElementById('topupNumberInfo').innerText = shopSettings.accNumber || '-';
             document.getElementById('topupWalletDisplay').innerText = shopSettings.accWallet || '0989828417';
 
-            const topupContainer = document.getElementById('topupImgContainer');
             const topupImg = document.getElementById('topupImgDisplay');
-            if (shopSettings.accImgUrl) { topupImg.src = shopSettings.accImgUrl; topupContainer.classList.remove('hidden'); }
-            else { topupContainer.classList.add('hidden'); }
+            if (shopSettings.accImgUrl) { topupImg.src = shopSettings.accImgUrl; }
 
             const rulesContainer = document.getElementById('rulesImgContainer');
             const rulesImg = document.getElementById('rulesImgDisplay');
             if (shopSettings.rulesImgUrl) { rulesImg.src = shopSettings.rulesImgUrl; rulesContainer.classList.remove('hidden'); }
             else { rulesContainer.classList.add('hidden'); }
 
-            const accContainer = document.getElementById('accImgContainer');
             const accImg = document.getElementById('accImgDisplay');
-            if (shopSettings.accImgUrl) { accImg.src = shopSettings.accImgUrl; accContainer.classList.remove('hidden'); }
-            else { accContainer.classList.add('hidden'); }
+            if (shopSettings.accImgUrl) { accImg.src = shopSettings.accImgUrl; }
         }
 
         function saveAllDataToSheet(showAlert = true) {
