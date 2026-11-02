@@ -203,18 +203,17 @@
             <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         </section>
 
-        <!-- Top-up Page (แสดง QR Code และฟอร์มเติมเงิน) -->
+        <!-- Top-up Page (แสดง QR Code และอัปโหลดสลิปจากเครื่อง) -->
         <section id="page-topup" class="tab-content hidden">
             <div class="max-w-xl mx-auto bread-card p-6 space-y-6">
                 <div class="flex items-center space-x-3 border-b border-mintPale pb-3">
                     <i class="fa-solid fa-coins text-2xl text-sakuraPinkDark"></i>
                     <div>
                         <h2 class="text-xl font-bold text-chocoText">เติมเครดิตเข้าระบบอัตโนมัติ</h2>
-                        <p class="text-xs text-grayPurple">สแกน QR Code เพื่อโอนเงิน จากนั้นกรอกจำนวนเงินและลิงก์สลิป เครดิตเข้าทันที</p>
+                        <p class="text-xs text-grayPurple">สแกน QR Code เพื่อโอนเงิน จากนั้นอัปโหลดสลิปจากเครื่อง เครดิตเข้าทันที</p>
                     </div>
                 </div>
 
-                <!-- ส่วนแสดง QR Code เด่นชัดสำหรับสแกนจ่าย -->
                 <div class="bg-mintPale/60 p-5 rounded-3xl border border-sakuraPink text-center space-y-3 shadow-inner">
                     <h3 class="font-bold text-sm text-chocoText"><i class="fa-solid fa-qrcode mr-1 text-sakuraPinkDark"></i> สแกน QR Code เพื่อชำระเงิน</h3>
                     <div id="topupImgContainer" class="block">
@@ -243,14 +242,9 @@
                         <input type="number" id="topupAmount" required min="1" placeholder="เช่น 50" class="w-full px-3.5 py-2.5 rounded-2xl border border-sakuraPink text-sm focus:outline-none focus:ring-2 focus:ring-sakuraPinkDark bg-mintPale/30">
                     </div>
                     <div>
-                        <div class="flex justify-between items-center mb-1">
-                            <label class="text-xs font-semibold text-chocoText">ลิงก์รูปภาพสลิป (Image URL)</label>
-                            <button type="button" onclick="openSlipGuideModal()" class="text-xs text-grayPurple font-bold underline hover:text-chocoText">
-                                <i class="fa-solid fa-circle-question mr-1"></i> วิธีทำรูปสลิปเป็นลิงก์
-                            </button>
-                        </div>
-                        <input type="text" id="topupSlipUrl" required placeholder="วางลิงก์รูปสลิปที่นี่ (จาก https://th.imgbb.com/)" class="w-full px-3.5 py-2.5 rounded-2xl border border-sakuraPink text-sm focus:outline-none focus:ring-2 focus:ring-sakuraPinkDark bg-mintPale/30">
-                        <p class="text-[11px] text-grayPurple mt-1">อัปโหลดสลิปแปลงเป็นลิงก์ได้ที่เว็บ: <a href="https://th.imgbb.com/" target="_blank" class="text-sakuraPinkDark underline font-semibold">https://th.imgbb.com/</a></p>
+                        <label class="block text-xs font-semibold text-chocoText mb-1">อัปโหลดรูปสลิปโอนเงิน (จากเครื่อง)</label>
+                        <input type="file" id="topupSlipFile" accept="image/*" required class="w-full px-3 py-2 rounded-2xl border border-sakuraPink text-sm bg-mintPale/30 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-sakuraPinkDark file:text-chocoText hover:file:opacity-90">
+                        <p class="text-[11px] text-grayPurple mt-1">ระบบจะอัปโหลดรูปภาพเก็บเข้า Google Drive ของร้านให้อัตโนมัติ</p>
                     </div>
                     <button type="submit" class="w-full bg-gradient-to-r from-sakuraPinkDark to-mintPaleDark text-chocoText font-bold py-3 rounded-2xl text-sm shadow-md hover:opacity-95 transition-all">
                         <i class="fa-solid fa-paper-plane mr-1"></i> เติมเครดิตเข้าระบบทันที (บันทึกลง Google Sheet)
@@ -557,20 +551,6 @@
         </div>
     </div>
 
-    <!-- Slip Guide Modal -->
-    <div id="slipGuideModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-        <div class="bread-card p-6 w-full max-w-md text-center space-y-4">
-            <h3 class="text-lg font-bold text-chocoText">วิธีทำรูปสลิปเป็นลิงก์</h3>
-            <p class="text-xs text-grayPurple">อัปโหลดสลิปของคุณที่เว็บไซต์ <a href="https://th.imgbb.com/" target="_blank" class="text-sakuraPinkDark underline font-semibold">https://th.imgbb.com/</a> แล้วคัดลอกลิงก์รูปภาพมาวาง</p>
-            <div class="bg-mintPale p-2 rounded-2xl border border-sakuraPink">
-                <img src="https://i.ibb.co/WvNKn4W1/phonto.jpg" alt="วิธีใส่ลิงก์สลิป" class="max-h-60 mx-auto rounded-2xl shadow-sm border border-gray-200 cursor-pointer" onclick="openImageViewer(this.src)">
-            </div>
-            <button onclick="closeSlipGuideModal()" class="w-full bg-sakuraPinkDark hover:opacity-90 text-chocoText font-bold py-2.5 rounded-2xl text-sm shadow-sm transition-all">
-                เข้าใจแล้ว
-            </button>
-        </div>
-    </div>
-
     <!-- Modals -->
     <div id="authModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
         <div class="bread-card p-6 w-full max-w-sm">
@@ -651,16 +631,6 @@
 
         function closeImageViewer() {
             document.getElementById('imageViewerModal').classList.add('hidden');
-        }
-
-        function openSlipGuideModal() {
-            playCuteSound();
-            document.getElementById('slipGuideModal').classList.remove('hidden');
-        }
-
-        function closeSlipGuideModal() {
-            playCuteSound();
-            document.getElementById('slipGuideModal').classList.add('hidden');
         }
 
         function toggleMusic() {
@@ -803,47 +773,77 @@
             }
         }
 
+        // ฟังก์ชันอัปโหลดสลิปจากเครื่องลง Drive และเติมเงินอัตโนมัติ
         function handleTopupSubmit(e) {
             e.preventDefault();
             if (!currentUser) { openAuthModal(); return; }
             playCuteSound();
             
             const amount = parseFloat(document.getElementById('topupAmount').value);
-            const slipUrl = document.getElementById('topupSlipUrl').value.trim();
+            const fileInput = document.getElementById('topupSlipFile');
 
-            Swal.fire({ title: 'กำลังเติมเครดิตอัตโนมัติ...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
+            if (fileInput.files.length === 0) {
+                Swal.fire('แจ้งเตือน', 'กรุณาเลือกรูปสลิปโอนเงิน', 'warning');
+                return;
+            }
 
-            const callbackName = 'jsonpTopup_' + Math.round(100000 * Math.random());
-            window[callbackName] = function(response) {
-                delete window[callbackName];
-                if (document.body.contains(script)) document.body.removeChild(script);
+            const file = fileInput.files[0];
+            Swal.fire({ title: 'กำลังอัปโหลดสลิปและเติมเงิน...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
 
-                if (response && response.status === 'success') {
-                    currentUser.credit = response.credit;
-                    usersCredit[currentUser.username] = response.credit;
-                    updateUserUI();
-                    
-                    document.getElementById('topupAmount').value = '';
-                    document.getElementById('topupSlipUrl').value = '';
+            const reader = new FileReader();
+            reader.onload = function(uploadEvent) {
+                const base64Data = uploadEvent.target.result;
 
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'เติมเครดิตสำเร็จ!',
-                        text: `ระบบเติมเงินเข้าอัตโนมัติ ${amount} ฿ เรียบร้อยแล้ว`,
-                        timer: 2000,
-                        showConfirmButton: false
-                    }).then(() => {
-                        fetchDataFromSheet(false);
-                        triggerCreamTransition(() => switchTab('shop'));
-                    });
-                } else {
-                    Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถบันทึกข้อมูลการเติมเงินได้', 'error');
-                }
+                // ขั้นที่ 1: ส่งรูปไปอัปโหลดลง Google Drive
+                fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        action: 'uploadSlipToDrive',
+                        base64Data: base64Data,
+                        filename: file.name,
+                        contentType: file.type
+                    })
+                })
+                .then(res => res.json())
+                .then(uploadRes => {
+                    if (uploadRes.status === 'success') {
+                        const slipUrl = uploadRes.url;
+
+                        // ขั้นที่ 2: บันทึกข้อมูลการเติมเงินและอัปเดตเครดิตลง Sheet
+                        return fetch(`${APPS_SCRIPT_URL}?action=topup&username=${encodeURIComponent(currentUser.username)}&amount=${amount}&slip=${encodeURIComponent(slipUrl)}`);
+                    } else {
+                        throw new Error('ไม่สามารถอัปโหลดรูปภาพได้');
+                    }
+                })
+                .then(res => res.json())
+                .then(topupRes => {
+                    if (topupRes.status === 'success') {
+                        currentUser.credit = topupRes.credit;
+                        usersCredit[currentUser.username] = topupRes.credit;
+                        updateUserUI();
+                        
+                        document.getElementById('topupAmount').value = '';
+                        fileInput.value = '';
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'เติมเครดิตสำเร็จ!',
+                            text: `ระบบเติมเงินเข้าอัตโนมัติ ${amount} ฿ เรียบร้อยแล้ว`,
+                            timer: 2000,
+                            showConfirmButton: false
+                        }).then(() => {
+                            fetchDataFromSheet(false);
+                            triggerCreamTransition(() => switchTab('shop'));
+                        });
+                    } else {
+                        Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถบันทึกข้อมูลการเติมเงินได้', 'error');
+                    }
+                })
+                .catch(err => {
+                    Swal.fire('เกิดข้อผิดพลาด', err.toString(), 'error');
+                });
             };
-
-            const script = document.createElement('script');
-            script.src = `${APPS_SCRIPT_URL}?action=topup&username=${encodeURIComponent(currentUser.username)}&amount=${amount}&slip=${encodeURIComponent(slipUrl)}&callback=${callbackName}`;
-            document.body.appendChild(script);
+            reader.readAsDataURL(file);
         }
 
         function renderProducts() {
@@ -961,15 +961,10 @@
                 settings: shopSettings
             };
 
-            const callbackName = 'jsonpSale_' + Math.round(100000 * Math.random());
-            window[callbackName] = function(response) {
-                delete window[callbackName];
-                if (document.body.contains(script)) document.body.removeChild(script);
-            };
-
-            const script = document.createElement('script');
-            script.src = `${APPS_SCRIPT_URL}?action=buy&callback=${callbackName}&data=${encodeURIComponent(JSON.stringify(salePayload))}`;
-            document.body.appendChild(script);
+            fetch(APPS_SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify({ action: 'buy', data: JSON.stringify(salePayload) })
+            });
 
             Swal.fire({
                 icon: 'success',
@@ -1196,11 +1191,13 @@
         function saveAllDataToSheet(showAlert = true) {
             if (showAlert) Swal.fire({ title: 'กำลังบันทึกข้อมูล...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
             const payload = { products: products, orders: orders, settings: shopSettings };
-            const callbackName = 'jsonpSave_' + Math.round(100000 * Math.random());
 
-            window[callbackName] = function(response) {
-                delete window[callbackName];
-                if (document.body.contains(script)) document.body.removeChild(script);
+            fetch(APPS_SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify({ action: 'save', data: JSON.stringify(payload) })
+            })
+            .then(res => res.json())
+            .then(response => {
                 if (showAlert) {
                     if (response && response.status === 'success') {
                         Swal.fire('สำเร็จ!', 'บันทึกข้อมูลลง Google Sheet เรียบร้อย', 'success');
@@ -1208,11 +1205,7 @@
                         Swal.fire('ข้อผิดพลาด', 'บันทึกไม่สำเร็จ', 'error');
                     }
                 }
-            };
-
-            const script = document.createElement('script');
-            script.src = `${APPS_SCRIPT_URL}?action=save&callback=${callbackName}&data=${encodeURIComponent(JSON.stringify(payload))}`;
-            document.body.appendChild(script);
+            });
         }
 
         function fetchDataFromSheet(showNotify = false) {
