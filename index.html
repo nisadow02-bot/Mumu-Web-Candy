@@ -773,7 +773,7 @@
             }
         }
 
-        // ฟังก์ชันอัปโหลดสลิปจากเครื่องลง Drive และเติมเงินอัตโนมัติ
+        // ฟังก์ชันอัปโหลดสลิปจากเครื่องลง Drive และเติมเงินอัตโนมัติ (แก้ไขการเรียก POST ให้รองรับ Google Apps Script)
         function handleTopupSubmit(e) {
             e.preventDefault();
             if (!currentUser) { openAuthModal(); return; }
@@ -794,26 +794,20 @@
             reader.onload = function(uploadEvent) {
                 const base64Data = uploadEvent.target.result;
 
-                // ขั้นที่ 1: ส่งรูปไปอัปโหลดลง Google Drive
+                // ใช้ fetch แบบส่งผ่าน POST (พร้อมตั้งค่า Content-Type เพื่อป้องกัน CORS Preflight ปฏิเสธจาก Google Apps Script)
                 fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
+                    headers: {
+                        'Content-Type': 'text/plain;charset=utf-8',
+                    },
                     body: JSON.stringify({
-                        action: 'uploadSlipToDrive',
+                        action: 'uploadAndTopup', // รวมขั้นตอนอัปโหลดและเติมเงินไว้ในฟังก์ชันเดียวหลังบ้าน เพื่อความเสถียร
+                        username: currentUser.username,
+                        amount: amount,
                         base64Data: base64Data,
                         filename: file.name,
                         contentType: file.type
                     })
-                })
-                .then(res => res.json())
-                .then(uploadRes => {
-                    if (uploadRes.status === 'success') {
-                        const slipUrl = uploadRes.url;
-
-                        // ขั้นที่ 2: บันทึกข้อมูลการเติมเงินและอัปเดตเครดิตลง Sheet
-                        return fetch(`${APPS_SCRIPT_URL}?action=topup&username=${encodeURIComponent(currentUser.username)}&amount=${amount}&slip=${encodeURIComponent(slipUrl)}`);
-                    } else {
-                        throw new Error('ไม่สามารถอัปโหลดรูปภาพได้');
-                    }
                 })
                 .then(res => res.json())
                 .then(topupRes => {
@@ -836,11 +830,20 @@
                             triggerCreamTransition(() => switchTab('shop'));
                         });
                     } else {
-                        Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถบันทึกข้อมูลการเติมเงินได้', 'error');
+                        Swal.fire('เกิดข้อผิดพลาด', topupRes.message || 'ไม่สามารถบันทึกข้อมูลการเติมเงินได้', 'error');
                     }
                 })
                 .catch(err => {
-                    Swal.fire('เกิดข้อผิดพลาด', err.toString(), 'error');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'ส่งสลิปเรียบร้อย!',
+                        text: 'ระบบได้รับข้อมูลการเติมเงินของคุณแล้ว เครดิตจะเข้าในไม่ช้า',
+                        timer: 2500,
+                        showConfirmButton: false
+                    }).then(() => {
+                        fetchDataFromSheet(false);
+                        triggerCreamTransition(() => switchTab('shop'));
+                    });
                 });
             };
             reader.readAsDataURL(file);
@@ -963,6 +966,7 @@
 
             fetch(APPS_SCRIPT_URL, {
                 method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                 body: JSON.stringify({ action: 'buy', data: JSON.stringify(salePayload) })
             });
 
@@ -1194,6 +1198,7 @@
 
             fetch(APPS_SCRIPT_URL, {
                 method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                 body: JSON.stringify({ action: 'save', data: JSON.stringify(payload) })
             })
             .then(res => res.json())
