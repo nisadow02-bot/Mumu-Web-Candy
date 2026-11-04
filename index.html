@@ -35,76 +35,15 @@
     </script>
     <style>
         body { font-family: 'Kanit', sans-serif; background-color: #FFFDF9; color: #3D2817; overflow-x: hidden; }
-        
-        .macaron-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; overflow: hidden; }
-        .macaron { 
-            position: absolute; 
-            border-radius: 50%; 
-            opacity: 0.85; 
-            pointer-events: none; 
-            animation: animateMacaron 10s linear infinite; 
-            box-shadow: inset 0 -3px 4px rgba(0,0,0,0.15), 0 2px 5px rgba(0,0,0,0.1);
-            border: 2px dashed rgba(255,255,255,0.7);
-        }
-        @keyframes animateMacaron {
-            0% { opacity: 0; top: -10%; transform: translateX(0) rotate(0deg) scale(0.8); }
-            10% { opacity: 0.9; }
-            90% { opacity: 0.9; }
-            100% { opacity: 0; top: 110%; transform: translateX(80px) rotate(360deg) scale(1.1); }
-        }
 
         @keyframes spinSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         .animate-spin-slow { animation: spinSlow 6s linear infinite; }
 
         .bread-card { border-radius: 2rem; border: 2px solid #FFD1DC; box-shadow: 0 8px 25px rgba(255, 209, 220, 0.25); background: #ffffff; transition: all 0.3s ease; }
         .bread-card:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(155, 142, 169, 0.2); }
-
-        #creamTransition {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #FFD1DC 0%, #FFFDF9 50%, #E8F8F5 100%);
-            z-index: 9999;
-            transform: translateY(-100%);
-            transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            pointer-events: none;
-            border-bottom-left-radius: 50% 20px;
-            border-bottom-right-radius: 50% 20px;
-        }
-        #creamTransition.active {
-            transform: translateY(0%);
-            pointer-events: auto;
-        }
-        .cream-wave {
-            position: absolute;
-            bottom: -30px;
-            left: 0;
-            width: 100%;
-            height: 40px;
-            background: radial-gradient(circle, #FFFDF9 15px, transparent 16px);
-            background-size: 30px 40px;
-        }
     </style>
 </head>
 <body class="bg-creamBg text-chocoText min-h-screen flex flex-col">
-
-    <div id="creamTransition">
-        <div class="text-center space-y-3">
-            <div class="w-16 h-16 bg-sakuraPink rounded-full flex items-center justify-center mx-auto text-chocoText text-2xl shadow-md animate-bounce">
-                <i class="fa-solid fa-cookie-bite"></i>
-            </div>
-            <h2 class="text-xl font-bold text-chocoText tracking-wide">Mumu Web & Candy กำลังเสิร์ฟความหวาน... 🍦</h2>
-        </div>
-        <div class="cream-wave"></div>
-    </div>
-
-    <div class="macaron-container" id="macaronContainer"></div>
 
     <!-- Music Player Widget -->
     <div class="fixed bottom-4 left-4 z-40 bg-white/95 backdrop-blur-md px-3 py-2 rounded-3xl shadow-lg border border-sakuraPink flex items-center space-x-2">
@@ -126,7 +65,7 @@
     <nav class="bg-white/90 backdrop-blur-md sticky top-0 z-40 border-b-2 border-sakuraPink shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
-                <div class="flex items-center space-x-3 cursor-pointer" onclick="playCuteSound(); triggerCreamTransition(() => switchTab('shop'))">
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="playCuteSound(); switchTab('shop')">
                     <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-sakuraPink to-mintPale flex items-center justify-center text-chocoText font-bold text-xl shadow-inner">
                         <i class="fa-solid fa-store"></i>
                     </div>
@@ -134,19 +73,19 @@
                 </div>
 
                 <div class="hidden md:flex items-center space-x-2" id="navTabs">
-                    <button onclick="playCuteSound(); triggerCreamTransition(() => switchTab('shop'))" class="nav-btn px-4 py-2 rounded-2xl text-sm font-semibold transition-all hover:bg-mintPale text-chocoText bg-sakuraPink/50" id="tab-shop">
+                    <button onclick="playCuteSound(); switchTab('shop')" class="nav-btn px-4 py-2 rounded-2xl text-sm font-semibold transition-all hover:bg-mintPale text-chocoText bg-sakuraPink/50" id="tab-shop">
                         <i class="fa-solid fa-store mr-1 text-sakuraPinkDark"></i> หน้าร้านค้า
                     </button>
-                    <button onclick="playCuteSound(); triggerCreamTransition(() => switchTab('topup'))" class="nav-btn px-4 py-2 rounded-2xl text-sm font-semibold transition-all hover:bg-mintPale text-chocoText" id="tab-topup">
+                    <button onclick="playCuteSound(); switchTab('topup')" class="nav-btn px-4 py-2 rounded-2xl text-sm font-semibold transition-all hover:bg-mintPale text-chocoText" id="tab-topup">
                         <i class="fa-solid fa-coins mr-1 text-sakuraPinkDark"></i> เติมเครดิต
                     </button>
-                    <button onclick="playCuteSound(); triggerCreamTransition(() => switchTab('orders'))" class="nav-btn px-4 py-2 rounded-2xl text-sm font-semibold transition-all hover:bg-mintPale text-chocoText" id="tab-orders">
+                    <button onclick="playCuteSound(); switchTab('orders')" class="nav-btn px-4 py-2 rounded-2xl text-sm font-semibold transition-all hover:bg-mintPale text-chocoText" id="tab-orders">
                         <i class="fa-solid fa-receipt mr-1 text-grayPurple"></i> คำสั่งซื้อของฉัน
                     </button>
-                    <button onclick="playCuteSound(); triggerCreamTransition(() => switchTab('account'))" class="nav-btn px-4 py-2 rounded-2xl text-sm font-semibold transition-all hover:bg-mintPale text-chocoText" id="tab-account">
+                    <button onclick="playCuteSound(); switchTab('account')" class="nav-btn px-4 py-2 rounded-2xl text-sm font-semibold transition-all hover:bg-mintPale text-chocoText" id="tab-account">
                         <i class="fa-solid fa-wallet mr-1 text-grayPurple"></i> ช่องทางชำระเงิน
                     </button>
-                    <button onclick="playCuteSound(); triggerCreamTransition(() => switchTab('rules'))" class="nav-btn px-4 py-2 rounded-2xl text-sm font-semibold transition-all hover:bg-mintPale text-chocoText" id="tab-rules">
+                    <button onclick="playCuteSound(); switchTab('rules')" class="nav-btn px-4 py-2 rounded-2xl text-sm font-semibold transition-all hover:bg-mintPale text-chocoText" id="tab-rules">
                         <i class="fa-solid fa-book-open mr-1 text-sakuraPinkDark"></i> กฎระเบียบ
                     </button>
                     <button onclick="playCuteSound(); checkAdminAccess()" class="nav-btn px-4 py-2 rounded-2xl text-sm font-semibold transition-all hover:bg-mintPale text-chocoText border border-grayPurple/40" id="tab-admin">
@@ -169,11 +108,11 @@
         </div>
         
         <div class="md:hidden flex justify-around bg-white border-t border-sakuraPink py-2 px-1 text-[11px]">
-            <button onclick="playCuteSound(); triggerCreamTransition(() => switchTab('shop'))" class="flex flex-col items-center text-chocoText font-medium"><i class="fa-solid fa-store text-base mb-0.5 text-sakuraPinkDark"></i> หน้าร้าน</button>
-            <button onclick="playCuteSound(); triggerCreamTransition(() => switchTab('topup'))" class="flex flex-col items-center text-chocoText font-medium"><i class="fa-solid fa-coins text-base mb-0.5 text-sakuraPinkDark"></i> เติมเงิน</button>
-            <button onclick="playCuteSound(); triggerCreamTransition(() => switchTab('orders'))" class="flex flex-col items-center text-chocoText font-medium"><i class="fa-solid fa-receipt text-base mb-0.5 text-grayPurple"></i> คำสั่งซื้อ</button>
-            <button onclick="playCuteSound(); triggerCreamTransition(() => switchTab('account'))" class="flex flex-col items-center text-chocoText font-medium"><i class="fa-solid fa-wallet text-base mb-0.5 text-grayPurple"></i> บัญชี</button>
-            <button onclick="playCuteSound(); triggerCreamTransition(() => switchTab('rules'))" class="flex flex-col items-center text-chocoText font-medium"><i class="fa-solid fa-book-open text-base mb-0.5 text-sakuraPinkDark"></i> กฎร้าน</button>
+            <button onclick="playCuteSound(); switchTab('shop')" class="flex flex-col items-center text-chocoText font-medium"><i class="fa-solid fa-store text-base mb-0.5 text-sakuraPinkDark"></i> หน้าร้าน</button>
+            <button onclick="playCuteSound(); switchTab('topup')" class="flex flex-col items-center text-chocoText font-medium"><i class="fa-solid fa-coins text-base mb-0.5 text-sakuraPinkDark"></i> เติมเงิน</button>
+            <button onclick="playCuteSound(); switchTab('orders')" class="flex flex-col items-center text-chocoText font-medium"><i class="fa-solid fa-receipt text-base mb-0.5 text-grayPurple"></i> คำสั่งซื้อ</button>
+            <button onclick="playCuteSound(); switchTab('account')" class="flex flex-col items-center text-chocoText font-medium"><i class="fa-solid fa-wallet text-base mb-0.5 text-grayPurple"></i> บัญชี</button>
+            <button onclick="playCuteSound(); switchTab('rules')" class="flex flex-col items-center text-chocoText font-medium"><i class="fa-solid fa-book-open text-base mb-0.5 text-sakuraPinkDark"></i> กฎร้าน</button>
             <button onclick="playCuteSound(); checkAdminAccess()" class="flex flex-col items-center text-chocoText font-medium"><i class="fa-solid fa-user-shield text-base mb-0.5 text-grayPurple"></i> แอดมิน</button>
         </div>
     </nav>
@@ -599,17 +538,6 @@
 
         let productQuantities = {};
 
-        function triggerCreamTransition(callback) {
-            const overlay = document.getElementById('creamTransition');
-            overlay.classList.add('active');
-            setTimeout(() => {
-                if (callback) callback();
-                setTimeout(() => {
-                    overlay.classList.remove('active');
-                }, 400);
-            }, 600);
-        }
-
         function openImageViewer(imgSrc) {
             playCuteSound();
             if (!imgSrc) return;
@@ -672,25 +600,7 @@
             });
         }
 
-        function createMacarons() {
-            const container = document.getElementById('macaronContainer');
-            const colors = ['#FFD1DC', '#E8F8F5', '#FFF2CC', '#E1D5E7', '#D5E8D4', '#F8CECC'];
-            for (let i = 0; i < 18; i++) {
-                const macaron = document.createElement('div');
-                macaron.classList.add('macaron');
-                const size = Math.random() * 16 + 14;
-                macaron.style.width = `${size}px`;
-                macaron.style.height = `${size * 0.65}px`;
-                macaron.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                macaron.style.left = `${Math.random() * 100}%`;
-                macaron.style.animationDelay = `${Math.random() * 8}s`;
-                macaron.style.animationDuration = `${Math.random() * 5 + 7}s`;
-                container.appendChild(macaron);
-            }
-        }
-
         window.onload = function() {
-            createMacarons();
             fetchDataFromSheet(false);
         };
 
@@ -705,7 +615,7 @@
         }
 
         function checkAdminAccess() {
-            if (isAdminLoggedIn) triggerCreamTransition(() => switchTab('admin'));
+            if (isAdminLoggedIn) switchTab('admin');
             else openAdminModal();
         }
 
@@ -718,16 +628,14 @@
             if (document.getElementById('adminPass').value === ADMIN_PASSWORD) {
                 isAdminLoggedIn = true;
                 closeAdminModal();
-                triggerCreamTransition(() => {
-                    switchTab('admin');
-                    renderAdminView();
-                });
+                switchTab('admin');
+                renderAdminView();
             } else {
                 Swal.fire('ข้อผิดพลาด', 'รหัสผ่านไม่ถูกต้อง', 'error');
             }
         }
 
-        function adminLogout() { isAdminLoggedIn = false; triggerCreamTransition(() => switchTab('shop')); }
+        function adminLogout() { isAdminLoggedIn = false; switchTab('shop'); }
         function openAuthModal() { document.getElementById('authModal').classList.remove('hidden'); }
         function closeAuthModal() { document.getElementById('authModal').classList.add('hidden'); }
 
@@ -745,7 +653,7 @@
             renderOrders();
         }
 
-        function logout() { currentUser = null; updateUserUI(); triggerCreamTransition(() => switchTab('shop')); }
+        function logout() { currentUser = null; updateUserUI(); switchTab('shop'); }
 
         function updateUserUI() {
             const userProfile = document.getElementById('userProfile');
@@ -810,7 +718,7 @@
                             showConfirmButton: false
                         }).then(() => {
                             fetchDataFromSheet(false);
-                            triggerCreamTransition(() => switchTab('shop'));
+                            switchTab('shop');
                         });
                     } else {
                         Swal.fire('ตรวจสอบสลิปไม่ผ่าน', topupRes.message || 'กรุณาตรวจสอบรูปสลิปหรือยอดเงินใหม่อีกครั้ง', 'error');
@@ -925,7 +833,7 @@
                     text: `คุณมีเครดิต ${currentUser.credit || 0} บาท แต่ยอดรวม ${qtyToBuy} ชิ้น ราคา ${totalPrice} บาท กรุณาเติมเครดิตก่อนสั่งซื้อ`,
                     confirmButtonText: 'ไปหน้าเติมเครดิต',
                     confirmButtonColor: '#FFB6C1'
-                }).then(() => { triggerCreamTransition(() => switchTab('topup')); });
+                }).then(() => { switchTab('topup'); });
                 return;
             }
 
@@ -1005,10 +913,9 @@
                 html: `<p class="text-xs text-grayPurple mb-2">รหัสสินค้าของคุณ (${qtyToBuy} ชุด):</p><div class="w-full max-h-48 overflow-y-auto bg-mintPale p-3 rounded-2xl border border-sakuraPink font-mono text-xs text-chocoText text-left whitespace-pre-wrap select-all">${escapeHtml(combinedCodes)}</div>`,
                 confirmButtonText: 'ดูคำสั่งซื้อ',
                 confirmButtonColor: '#FFB6C1'
-            }).then(() => { triggerCreamTransition(() => switchTab('orders')); });
+            }).then(() => { switchTab('orders'); });
         }
 
-        // ฟังก์ชันช่วยแปลง HTML ป้องกัน Error
         function escapeHtml(text) {
             return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         }
